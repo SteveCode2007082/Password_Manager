@@ -6,6 +6,11 @@ web_address = ""
 user_id = ""
 user_password = ""
 
+
+view_all_login_info = """
+SELECT * FROM id_password
+"""
+
 def create_connection(db_file):
     conn = None
     try:
@@ -94,7 +99,8 @@ if __name__ == '__main__':
             print("1. Add login information")
             print("2. Edit login information")
             print("3. view all login information")
-            print("4. Quit")
+            print("4. Search login information")
+            print("5. Quit")
             choose = input("\nEnter your choose: ")
             if choose == "1":
                 if check_input_valid(True, True, True):
@@ -112,9 +118,6 @@ if __name__ == '__main__':
                     else:
                         print("\nCannot insert the info")
             elif choose == "2":
-                view_all_login_info = """
-                SELECT * FROM id_password
-                """
                 if conn is not None:
                     infos = execute_read_query(conn, view_all_login_info)
                 web_of_database = input("\nEnter the website name: ")
@@ -191,9 +194,6 @@ if __name__ == '__main__':
                         print("Quit")
 
             elif choose == "3":
-                view_all_login_info = """
-                SELECT * FROM id_password
-                """
                 if conn is not None:
                     infos = execute_read_query(conn, view_all_login_info)
                     i = 0
@@ -206,6 +206,19 @@ if __name__ == '__main__':
                         print("login password: " + info[2])
                 else:
                     print("\nCannot view the info")
+            elif choose == "4":
+                if conn is not None:
+                    infos = execute_read_query(conn, view_all_login_info)
+                web_of_database = input("\nEnter the website name: ")
+                count = 0
+                for info in infos:
+                    if web_of_database in info[3]:
+                        count += 1
+                        print("\nNumber: " + str(count))
+                        print("ID: " + str(info[0]))
+                        print("Web address: " + info[3])
+                        print("Login id: " + info[1])
+                        print("Login password: " + info[2])
             else:
                 print("\nProcess end")
                 break
